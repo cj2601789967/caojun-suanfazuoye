@@ -1,0 +1,67 @@
+include<stdio.h>
+
+int search_value(int *ar,int n,int x);
+int search_value_digui(const int *ar, int left, int right, int x);
+int main()
+{
+int a[10]={13,24,34,41,49,67,71,72,86,87,};
+int n = sizeof(a)/sizeof(a[0]);
+
+printf("%d\n",search_value(a, n, 67));
+printf("%d\n",search_value_digui(a, 0, n-1, 67));
+return 0;
+}
+/*用循环方式实现二分查找*/
+int search_value(int *ar, int n, int x)
+{
+int i = 0;
+int j = n-1;
+int pos = -1;
+int mid = 0;
+while(i<=j)
+{
+mid = (i+j)/2;
+if(x == ar[mid])
+{
+while(mid>i && ar[mid-1] == x)
+mid--;
+pos = mid;
+break;
+}
+if(x>ar[mid])
+{
+i = mid + 1;
+}
+else
+{
+j = mid - 1;
+}
+}
+return pos;
+}
+
+/*递归方式实现二分查找*/
+int search_value_digui(const int *ar,int left, int right, int x)
+{
+int pos =-1;
+if(ar == NULL || right<1)
+return -1;
+if(left <=right)
+{
+int mid = (right -left +1)/2+left;
+if(ar[mid]== x)
+{
+while(mid>left && ar[mid-1] == x)
+--mid;
+pos = mid;
+}else if(x< ar[mid])
+{
+pos= search_value_digui(ar,left,mid-1, x);
+}
+else
+{
+pos= search_value_digui(ar, mid+1, right, x);
+}
+}
+return pos;
+}
