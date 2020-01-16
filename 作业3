@@ -1,0 +1,14 @@
+#include<stdio.h>
+int max( int *a, int n )
+{
+	int x;
+	if ( n<=1 )
+		return *a;
+	x=max( a+1,n-1);
+	return (x>*a)?x:*a ;
+}
+void main()
+{
+	int arr[]={3,9,6,1,5};
+	printf("%d\n", max(arr,5 ) );
+}
