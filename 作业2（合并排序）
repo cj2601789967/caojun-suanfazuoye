@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h> 
+ 
+#define ARRAY 20 //生成数组的大小
+#define RANGE 100 //数组元素的大小从1到RANGE
+ 
+int main(){
+        printf("\n");
+ 
+        srand((unsigned) time(NULL));//用时间做种，每次产生随机数不一样
+        //随机生成数组
+        int k,list[ARRAY]; 
+        for(k=0;k<ARRAY;k++){
+                list[k]=rand()%RANGE+1;
+        }
+ 
+        //    int list[]={5,2,1,6,9,8,3,4,7,};
+        //    int list[]={6,2,7,3,9,1,};
+ 
+        int len=sizeof(list)/sizeof(list[0]);
+        printf("原始数组为：");
+        printList(list,len);
+        //printf("****mergeSort****\n");
+        int tmp[len];
+        mergeSort(list,0,len-1,tmp);
+        printf("排序后数组：");
+        printList(list,len);
+ 
+        printf("\n");
+        return 0;
+}
+ 
+int printList(int* list,int len){
+        int i;
+        for(i=0;i<len;i++){
+                printf("%d->",list[i]);
+        }
+        printf("\n\n");
+        return 0;
+}
+ 
+ 
+int mergeSort(int* list,int p,int r,int* tmp){
+        if(p>=r)return;
+        int q=(p+r)/2;
+        //打印分区细节
+        //printf("****mergeSort****,p=%d,q=%d,r=%d\n\n",p,q,r);
+        mergeSort(list,p,q,tmp);
+        mergeSort(list,q+1,r,tmp);
+        merge(list,p,r,tmp);
+        return 0;
+}
+ 
+int merge(int* list,int p,int r,int* tmp){
+        //      int tmp[r-p+1];
+        int q;
+        q=(p+r)/2;
+        int i=p,j=q+1,k=0;//k为临时数组的下标
+        while(i<=q&&j<=r){
+                if(list[j]<list[i]){
+                        tmp[k++]=list[j++];
+                } else{
+                        tmp[k++]=list[i++];
+                }
+        }
+        //判断两个有序子序列，哪个已经全部放入临时数组，另外一个剩下的直接全部拷贝到tmp
+        while(i<=q){
+                tmp[k++]=list[i++];
+        } 
+        while(j<=r){
+                tmp[k++]=list[j++];
+        }
+        //printList(tmp,3);
+        //将临时数组的已排序数据拷贝回原数组
+        for(k=0,i=p;k<r-p+1;k++){
+                list[i++]=tmp[k]; 
+        }
+        return 0;
+}
