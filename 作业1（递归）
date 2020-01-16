@@ -1,0 +1,80 @@
+/*
+*二分查找算法(对已经排好序的数据而言)递归实现
+*/
+#include<stdio.h>
+#include<stdlib.h>
+int Binary_search_recursive(int *s,int length,int key,int L,int H);//二分查找的递归实现函数
+void sort(int *s,int length);//对数组进行排序函数
+void main()
+{
+    int m;
+    int i;
+    int key;
+    int n[100];//待排序数组
+    printf("请输入数据的个数:\n");
+     scanf("%d",&m);
+      printf("请依次输入数据:\n");
+         for(i=0;i<m;i++)
+         {
+             scanf("%d",&n[i]);
+         }
+         sort(n,m);
+         printf("数据递增排序的效果为:\n");
+           for(i=0;i<m;i++)
+              printf("%d\t",n[i]);
+           printf("\n");
+         printf("请输入要查找的数据:\n");
+         while(scanf("%d",&key)!=EOF)
+         {
+                int pos1=Binary_search_recursive(n,m,key,0,m-1);
+                if(pos1==-1)
+                {
+                    printf("没有找到要查询的数据！\n");
+                }
+                else
+                {
+                    printf("数据 %d->位置 %d",key,pos1);
+                }
+         }
+
+}
+void sort(int *s,int length)//对数组进行排序函数
+{
+    //改进版的冒泡排序算法 递增排序
+      int i=length-1;//比较的次数
+      int j;
+      int  t;
+      int flag;
+      while(flag)
+      {
+          flag=0;
+          for(j=0;j<i;j++)
+          {
+              if(s[j]>s[j+1])
+              {
+                  t=s[j];
+                  s[j]=s[j+1];
+                  s[j+1]=t;//交换数据
+                  flag=1;
+            }
+              i--;
+          }
+      }
+}
+int Binary_search_recursive(int *s,int length,int key,int L,int H)//二分查找的递归实现函数
+{
+    int  M=(L+H)/2;
+    if(L>H)
+        return -1;
+    if(key<s[M])
+    {
+        return (Binary_search_recursive(s,length,key,L,M-1));
+    }
+    else if(key>s[M])
+    {
+        return (Binary_search_recursive(s,length,key,M+1,H));
+    }
+    else
+        return (M);
+}
+
